@@ -1,5 +1,3 @@
-export bspline
-
 """
     bspline(p, j, x)
 
