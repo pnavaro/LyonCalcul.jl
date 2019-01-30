@@ -5,7 +5,8 @@ makedocs(modules=[LyonCalcul],
          doctest = false,
          format = Documenter.HTML(),
          sitename = "LyonCalcul.jl",
-         pages = ["Documentation"    => "index.md"])
+         pages = ["Documentation"    => "index.md",
+                  "Talk" => "slides.md" ])
 
 deploydocs(
     deps   = Deps.pip("mkdocs", "python-markdown-math"),
