@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Talk · LyonCalcul.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link href="../assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><a href="../index.html"><img class="logo" src="../assets/logo.png" alt="LyonCalcul.jl logo"/></a><h1>LyonCalcul.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="../search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="../">Documentation</a></li><li class="current"><a class="toctext" href>Talk</a><ul class="internal"><li class="toplevel"><a class="toctext" href="#bspline-function-1"><code>bspline</code> function</a></li><li class="toplevel"><a class="toctext" href="#Advection-callable-struct-1"><code>Advection</code> callable struct</a></li><li class="toplevel"><a class="toctext" href="#Why-make-a-package-?-1">Why make a package ?</a></li><li class="toplevel"><a class="toctext" href="#Configure-git-1">Configure git</a></li><li class="toplevel"><a class="toctext" href="#Create-the-Julia-package-LyonCalcul-1">Create the Julia package LyonCalcul</a></li><li class="toplevel"><a class="toctext" href="#Activate-your-package-1">Activate your package</a></li><li class="toplevel"><a class="toctext" href="#Add-dependencies-1">Add dependencies</a></li><li class="toplevel"><a class="toctext" href="#Check-the-documentation-1">Check the documentation</a></li><li class="toplevel"><a class="toctext" href="#Add-a-test-1">Add a test</a></li><li><a class="toctext" href="#Verify-the-test-1">Verify the test</a></li><li><a class="toctext" href="#Documentation-1">Documentation</a></li><li class="toplevel"><a class="toctext" href="#Add-a-repository-on-Github-1">Add a repository on Github</a></li><li class="toplevel"><a class="toctext" href="#Push-the-package-on-github-1">Push the package on github</a></li><li class="toplevel"><a class="toctext" href="#On-Github-choose-your-license-1">On Github choose your license</a></li><li class="toplevel"><a class="toctext" href="#On-your-computer-1">On your computer</a></li><li><a class="toctext" href="#Travis-1">Travis</a></li><li><a class="toctext" href="#Codecov-1">Codecov</a></li><li><a class="toctext" href="#Hosting-your-documentation-on-Github-pages-1">Hosting your documentation on Github pages</a></li><li><a class="toctext" href="#Update-documentation-with-Travis-1">Update documentation with Travis</a></li><li class="toplevel"><a class="toctext" href="#Enable-GitHub-Pages-1">Enable GitHub Pages</a></li><li><a class="toctext" href="#Badges-1">Badges</a></li><li class="toplevel"><a class="toctext" href="#Register-your-package-1">Register your package</a></li><li class="toplevel"><a class="toctext" href="#Items-not-covered-1">Items not covered</a></li><li class="toplevel"><a class="toctext" href="#Bonus-1">Bonus</a></li><li class="toplevel"><a class="toctext" href="#Links-1">Links</a></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Talk</a></li></ul><a class="edit-page" href="https://github.com/TRAVIS_REPO_SLUG/blob/master/"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Talk</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Who-am-I-?-1" href="#Who-am-I-?-1">Who am I ?</a></h1><ul><li><p>My name is <em>Pierre Navaro</em></p></li><li><p>Ph.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)</p></li><li><p>Scientific Software Engineer in Strasbourg (2003-2015) (Fortran 90-2003 + OpenMP-MPI)</p></li><li><p>Moved to Rennes in 2015 (Numpy + Cython, R + Rcpp)</p></li><li><p>Julia user since July 2018 (Julia v1.0)</p></li></ul><h1><a class="nav-anchor" id="bspline-function-1" href="#bspline-function-1"><code>bspline</code> function</a></h1><pre><code class="language-">&quot;&quot;&quot;
+    bspline(p, j, x)
+
+Return the value at x in [0,1[ of the B-spline with integer nodes
+of degree p with support starting at j.
+Implemented recursively using the
+[De Boor&#39;s Algorithm](https://en.wikipedia.org/wiki/De_Boor%27s_algorithm)
+</code></pre><p>math B<em>{i,0}(x) := \left\{ \begin{matrix} 1 &amp; \mathrm{if}  \quad t</em>i ≤ x &lt; t_{i+1} \\
+0 &amp; \mathrm{otherwise} \end{matrix} \right.</p><pre><code class="language-none"></code></pre><p>math B<em>{i,p}(x) := \frac{x - t</em>i}{t<em>{i+p} - t</em>i} B_{i,p-1}(x)</p><ul><li>\frac{t<em>{i+p+1} - x}{t</em>{i+p+1} - t<em>{i+1}} B</em>{i+1,p-1}(x).</li></ul><pre><code class="language-none">&quot;&quot;&quot;
+function bspline(p::Int, j::Int, x::Float64)
+   if p == 0
+       if j == 0
+           return 1.0
+       else
+           return 0.0
+       end
+   else
+       w = (x - j) / p
+       w1 = (x - j - 1) / p
+   end
+   return (w * bspline(p - 1, j, x)
+           + (1 - w1) * bspline(p - 1, j + 1, x))
+end</code></pre><div><pre><code class="language-julia">?bspline</code></pre></div><h1><a class="nav-anchor" id="Advection-callable-struct-1" href="#Advection-callable-struct-1"><code>Advection</code> callable struct</a></h1><div><pre><code class="language-julia">&quot;&quot;&quot;
+    Advection(n, p, delta)
+
+    n :: Number of points.
+    p :: Spline degree.
+    delta :: space size step.
+
+&quot;&quot;&quot;
+mutable struct Advection
+    n         :: Int64
+    p         :: Int64
+    delta     :: Float64
+    modes     :: Vector{Float64}
+    eig_bspl  :: Vector{ComplexF64}
+    eig_alpha :: Vector{ComplexF64}
+
+    function Advection( n, p, delta )
+
+        eig_bspl  = zeros(ComplexF64,n)
+        eig_alpha = similar(eig_bspl)
+        modes = 2π * (0:n-1) / n
+
+        eig_bspl .= bspline(p, -div(p+1,2), 0.0)
+        for j in 1:div(p+1,2)-1
+            eig_bspl .+= (bspline(p, j-div(p+1,2), 0.0)
+             * 2 * cos.(j * modes))
+        end
+
+        new(n, p, delta, modes, eig_bspl, eig_alpha)
+    end
+end</code></pre><pre><code class="language-none">Main.ex-slides.Advection</code></pre></div><pre><code class="language-">using FFTW
+
+&quot;&quot;&quot;
+    advection! = Advection( n, p, delta)
+    advection!( f, alpha )
+
+    Create a function to compute the interpolating spline
+    of degree p of odd degree of a 1D function f on a periodic
+    uniform mesh, at all points x after a displacement alpha.
+    Input f type is Vector{Float64} and is updated inplace.
+
+&quot;&quot;&quot;
+function (adv :: Advection)(f     :: Vector{Float64},
+                            alpha :: Float64)
+
+
+   ishift = floor(- alpha / adv.delta)
+   beta = - ishift - alpha / adv.delta
+   fill!(adv.eig_alpha, 0.0)
+   for j in -div(adv.p-1,2):div(adv.p+1,2)
+      adv.eig_alpha .+= (bspline(adv.p, j-div(adv.p+1,2), beta)
+         .* exp.((ishift + j) * 1im .* adv.modes))
+   end
+
+   f .= real(ifft(fft(f) .* adv.eig_alpha ./ adv.eig_bspl))
+
+end</code></pre><pre><code class="language-">using Plots
+xmin, xmax, nx = 0, 4π, 64  ## set-up the 1d mesh
+dx = (xmax - xmin) / nx
+x = range(xmin, stop=xmax, length=nx+1)[1:end-1] |&gt; collect
+
+f = sin.(x) ## initialize the function f(x)
+advection! = Advection(nx, 5, dx) ## Create the advection function
+advection!(f, 1.0) ## advect the function f with a displacement α = 1.0
+f_ref = sin.(x.-1) ## compute the analytical solution
+plot(x, f_ref, label=:reference)
+scatter!(x, f, label=:computed)</code></pre><h1><a class="nav-anchor" id="Why-make-a-package-?-1" href="#Why-make-a-package-?-1">Why make a package ?</a></h1><ul><li>Share your code and maintain it.</li><li>Better source files organization.</li><li>Improve your programming practices (tests and documentation).</li><li>Continuous integration (Github+Travis-CI).</li><li>Documentation is hosted and generated after every changes.</li></ul><h1><a class="nav-anchor" id="Configure-git-1" href="#Configure-git-1">Configure git</a></h1><pre><code class="language-bash">git config --global user.name &quot;Pierre Navaro&quot;
+git config --global user.email &quot;pierre.navaro@math.cnrs.fr&quot;
+git config --global github.user &quot;pnavaro&quot;</code></pre><h1><a class="nav-anchor" id="Create-the-Julia-package-LyonCalcul-1" href="#Create-the-Julia-package-LyonCalcul-1">Create the Julia package LyonCalcul</a></h1><pre><code class="language-julia">(v1.0) pkg&gt; generate LyonCalcul
+Generating project LyonCalcul:
+    LyonCalcul/Project.toml
+    LyonCalcul/src/LyonCalcul.jl</code></pre><pre><code class="language-julia">shell&gt; cat LyonCalcul/Project.toml
+authors = [&quot;Pierre Navaro &lt;pierre.navaro@math.cnrs.fr&gt;&quot;]
+name = &quot;LyonCalcul&quot;
+uuid = &quot;417a5b38-18da-11e9-35ce-9bdc85ad86c9&quot;
+version = &quot;0.1.0&quot;
+
+[deps]</code></pre><pre><code class="language-julia">shell&gt; cat LyonCalcul/src/LyonCalcul.jl
+module LyonCalcul
+
+greet() = print(&quot;Hello World!&quot;)
+
+end # module</code></pre><pre><code class="language-julia">module LyonCalcul
+
+export Advection
+
+include(&quot;bspline.jl&quot;)
+include(&quot;advection.jl&quot;)
+
+end # module</code></pre><h1><a class="nav-anchor" id="Activate-your-package-1" href="#Activate-your-package-1">Activate your package</a></h1><pre><code class="language-julia">(v1.0) pkg&gt; activate LyonCalcul
+
+(LyonCalcul) pkg&gt; instantiate
+  Updating registry at `~/.julia/registries/General`
+  Updating git-repo `https://github.com/JuliaRegistries/General.git`
+ Resolving package versions...
+  Updating `~/JuliaProjects/LyonCalcul/Project.toml`
+ [no changes]</code></pre><h1><a class="nav-anchor" id="Add-dependencies-1" href="#Add-dependencies-1">Add dependencies</a></h1><pre><code class="language-julia">(LyonCalcul) pkg&gt; add FFTW
+ Resolving package versions...
+  Updating `~/JuliaProjects/LyonCalcul/Project.toml`
+  [7a1cc6ca] + FFTW v0.2.4
+  Updating `~/JuliaProjects/LyonCalcul/Manifest.toml`
+  [621f4979] + AbstractFFTs v0.3.2
+  [b99e7846] + BinaryProvider v0.5.3
+  [34da2185] + Compat v1.4.0
+  [8f4d0f93] + Conda v1.1.1
+  ...</code></pre><p>&quot; The Manifest.toml allows someone to replicate the exact version of the dependencies that was recorded in the manifest on e.g. another machine. For a package that is to be used as a library, this is not useful.</p><p>However, for an “application”, i.e. something at “top level” (say your julia code to do the simulations in a scientific paper) then it is likely useful to be able to replicate that exact state and the Manifest is thus useful to check in.&quot;</p><p><em>Kristoffer Carlsson</em> (Julia Computing)</p><h1><a class="nav-anchor" id="Check-the-documentation-1" href="#Check-the-documentation-1">Check the documentation</a></h1><pre><code class="language-julia">
+julia&gt; using LyonCalcul
+
+help?&gt; Advection
+search: Advection
+
+  Advection(n, p, delta)
+
+  n :: Number of points.
+  p :: Spline degree.
+  delta :: space size step.
+
+  ───────────────────────────────────────────────────────────────────────────────────────
+
+  advection! = Advection( n, p, delta)
+  advection!( f, alpha )
+
+  Create a function to compute the interpolating spline
+  of degree p of odd
+  degree of a 1D function f on a periodic uniform mesh, at
+  all points x after a displacement alpha.
+  Input f type is Vector{Float64} and is updated inplace.</code></pre><h1><a class="nav-anchor" id="Add-a-test-1" href="#Add-a-test-1">Add a test</a></h1><pre><code class="language-bash">cd LyonCalcul
+mkdir test</code></pre><p>add file runtests.jl</p><pre><code class="language-julia">shell&gt; cat test/runtests.jl
+using Test
+using LyonCalcul
+
+@testset &quot;Test advection sinus function&quot; begin
+
+     xmin, xmax, nx = 0.0, 2π, 128
+     dx = (xmax - xmin) / nx
+     x = range(xmin, stop=xmax, length=nx+1)[1:end-1] |&gt; collect
+     f = sin.(x)
+     advection! = Advection( nx, 5, dx )
+     advection!( f, 0.5)
+     @test maximum(abs.(f .- sin.(x .- 0.5))) ≈ 0.0 atol = 1e-12
+
+end</code></pre><h2><a class="nav-anchor" id="Verify-the-test-1" href="#Verify-the-test-1">Verify the test</a></h2><pre><code class="language-julia">(LyonCalcul) pkg&gt; test
+   Testing LyonCalcul
+ Resolving package versions...
+Test Summary:             | Pass  Total
+Test advection sinus function |    1      1
+   Testing LyonCalcul tests passed</code></pre><h2><a class="nav-anchor" id="Documentation-1" href="#Documentation-1">Documentation</a></h2><p>https://github.com/JuliaDocs/Documenter.jl</p><pre><code class="language-julia">julia&gt; using DocumenterTools
+shell&gt; pwd
+/Users/navaro/JuliaProjects/LyonCalcul
+julia&gt; DocumenterTools.generate(&quot;docs&quot;)
+[ Info: name of package automatically determined to be `LyonCalcul`.
+[ Info: deploying documentation to `~/JuliaProjects/LyonCalcul/docs`
+[ Info: Generating .gitignore at /Users/navaro/JuliaProjects/LyonCalcul/docs/.gitignore
+[ Info: Generating make.jl at /Users/navaro/JuliaProjects/LyonCalcul/docs/make.jl
+[ Info: Generating Project.toml at /Users/navaro/JuliaProjects/LyonCalcul/docs/Project.toml
+[ Info: Generating src/index.md at /Users/navaro/JuliaProjects/LyonCalcul/docs/src/index.md</code></pre><pre><code class="language-julia">shell&gt; cat docs/src/index.md
+# LyonCalcul.jl
+
+Documentation for LyonCalcul.jl
+
+## Types and Functions</code></pre><pre><code class="language-none">```@autodocs
+Modules = [LyonCalcul]
+Order   = [:type, :function]
+```</code></pre><pre><code class="language-julia">shell&gt; cat docs/make.jl
+
+using Documenter
+using LyonCalcul
+
+makedocs(modules=[LyonCalcul],
+         doctest = false,
+         format = Documenter.HTML(),
+         sitename = &quot;LyonCalcul.jl&quot;,
+         pages = [&quot;Documentation&quot;    =&gt; &quot;index.md&quot;])
+
+deploydocs(
+    deps   = Deps.pip(&quot;mkdocs&quot;, &quot;python-markdown-math&quot;),
+    repo   = &quot;github.com/pnavaro/LyonCalcul.jl.git&quot;,
+ )</code></pre><h1><a class="nav-anchor" id="Add-a-repository-on-Github-1" href="#Add-a-repository-on-Github-1">Add a repository on Github</a></h1><p>https://github.com/pnavaro/LyonCalcul.jl</p><ul><li>Note : the repository name has the &quot;.jl&quot; extension</li></ul><pre><code class="language-bash">$ echo &quot;# LyonCalcul.jl&quot; &gt;&gt; README.md
+$ git init
+Initialized empty Git repository in /Users/navaro/JuliaProjects/LyonCalcul/.git/
+$ git add .</code></pre><pre><code class="language-bash">$ git commit -m &quot;first commit&quot;
+[master (root-commit) 8863c2e] first commit
+ 11 files changed, 287 insertions(+)
+ create mode 100644 Manifest.toml
+ create mode 100644 Project.toml
+ create mode 100644 README.md
+ create mode 100644 docs/.gitignore
+ create mode 100644 docs/Project.toml
+ create mode 100644 docs/make.jl
+ create mode 100644 docs/src/index.md
+ create mode 100644 src/LyonCalcul.jl
+ create mode 100644 src/advection.jl
+ create mode 100644 src/bspline.jl
+ create mode 100644 test/runtests.jl</code></pre><pre><code class="language-bash">$ git remote add origin git@github.com:pnavaro/LyonCalcul.jl.git
+$ git push -u origin master
+Enumerating objects: 17, done.
+Counting objects: 100% (17/17), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (13/13), done.
+Writing objects: 100% (17/17), 4.29 KiB | 2.15 MiB/s, done.
+Total 17 (delta 0), reused 0 (delta 0)
+To github.com:pnavaro/LyonCalcul.jl.git
+ * [new branch]      master -&gt; master
+Branch &#39;master&#39; set up to track remote branch &#39;master&#39; from &#39;origin&#39;.</code></pre><h3><a class="nav-anchor" id="Ignore-some-files-1" href="#Ignore-some-files-1">Ignore some files</a></h3><pre><code class="language-none">$ cat .gitignore
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+docs/build/
+docs/site/
+Manifest.toml</code></pre><h3><a class="nav-anchor" id="Install-first-version-of-Example-package-in-your-julia-installation-1" href="#Install-first-version-of-Example-package-in-your-julia-installation-1">Install first version of Example package in your julia installation</a></h3><pre><code class="language-none">(v1.1) pkg&gt; add https://github.com/pnavaro/LyonCalcul.jl.git
+  Updating registry at `~/.julia/registries/General`
+  Updating git-repo `https://github.com/JuliaRegistries/General.git`
+   Cloning git-repo `https://github.com/pnavaro/LyonCalcul.jl.git`
+  Updating git-repo `https://github.com/pnavaro/LyonCalcul.jl.git`
+ Resolving package versions...
+  Updating `~/.julia/environments/v1.1/Project.toml`
+  [417a5b38] ~ LyonCalcul v0.1.0 [`~/JuliaProjects/LyonCalcul`] ⇒ v0.1.0 #master (https://github.com/pnavaro/LyonCalcul.jl.git)
+  Updating `~/.julia/environments/v1.1/Manifest.toml`
+  [417a5b38] ~ LyonCalcul v0.1.0 [`~/JuliaProjects/LyonCalcul`] ⇒ v0.1.0 #master (https://github.com/pnavaro/LyonCalcul.jl.git`</code></pre><h3><a class="nav-anchor" id="Test-it-1" href="#Test-it-1">Test it</a></h3><pre><code class="language-none">(v1.1) pkg&gt; test LyonCalcul
+   Testing LyonCalcul
+
+Test Summary:                 | Pass  Total
+Test advection sinus function |    1      1
+   Testing LyonCalcul tests passed</code></pre><h1><a class="nav-anchor" id="Push-the-package-on-github-1" href="#Push-the-package-on-github-1">Push the package on github</a></h1><pre><code class="language-bash">cd LyonCalcul
+echo &quot;# LyonCalcul.jl&quot; &gt;&gt; README.md
+git init
+git add README.md
+git commit -m &quot;first commit&quot;
+git remote add origin git@github.com:pnavaro/LyonCalcul.jl.git
+git push -u origin master</code></pre><h1><a class="nav-anchor" id="On-Github-choose-your-license-1" href="#On-Github-choose-your-license-1">On Github choose your license</a></h1><p>Above the file list, click Create new file.</p><p>In the file name field, type LICENSE (with all caps).</p><ul><li>Choose a license template button.</li><li>Click Choose a license template.</li><li>Add a license to your project.</li><li>Don&#39;t create pull request choose &quot;master&quot; branch.</li></ul><h1><a class="nav-anchor" id="On-your-computer-1" href="#On-your-computer-1">On your computer</a></h1><pre><code class="language-bash">git pull origin master</code></pre><h2><a class="nav-anchor" id="Travis-1" href="#Travis-1">Travis</a></h2><p>Add your repository by going to https://travis-ci.org</p><ul><li>Profile -&gt; Settings -&gt; Enable your repository</li></ul><h2><a class="nav-anchor" id="Codecov-1" href="#Codecov-1">Codecov</a></h2><p>Add your repository by going to https://codecov.io/gh</p><pre><code class="language-yaml">language: julia
+
+os:
+  - linux
+  - osx
+
+julia:
+  - 1.0
+  - nightly
+
+notifications:
+  email: true
+
+after_success:
+    - julia -e &#39;using Pkg; cd(Pkg.dir(&quot;LyonCalcul&quot;)); Pkg.add(&quot;Coverage&quot;); using Coverage; Codecov.submit(process_folder())&#39;
+
+jobs:
+  include:
+    - stage: &quot;Documentation&quot;
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs/ -e &#39;using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()&#39;
+        - julia --project=docs/ docs/make.jl
+      name: &quot;HTML&quot;
+      after_success: skip</code></pre><h2><a class="nav-anchor" id="Hosting-your-documentation-on-Github-pages-1" href="#Hosting-your-documentation-on-Github-pages-1">Hosting your documentation on Github pages</a></h2><p>Launch julia in your package directory.</p><pre><code class="language-none">pkg&gt; add DocumenterTools
+pkg&gt; activate .</code></pre><pre><code class="language-julia-repl">julia&gt; using DocumenterTools
+julia&gt; using LyonCalcul
+julia&gt; Travis.genkeys(LyonCalcul)</code></pre><p>Follow the instructions that are printed out</p><ul><li>Add the public ssh key to your settings page for the GitHub repository.</li><li>Don&#39;t forget to check <strong><code>Allow write access</code></strong> to allow Documenter to commit the   generated documentation to the repo.</li><li>Next add the long private key named DOCUMENTER_KEY to the Travis settings page using the provided link.</li><li>Make sure that the &quot;Display value in build log&quot; option is <strong>OFF</strong>.</li></ul><h2><a class="nav-anchor" id="Update-documentation-with-Travis-1" href="#Update-documentation-with-Travis-1">Update documentation with Travis</a></h2><p>To tell Travis that we want a new build stage we can add the following to the <code>.travis.yml</code> file:</p><pre><code class="language-yaml">jobs:
+  include:
+    - stage: &quot;Documentation&quot;
+      julia: 1.0
+      os: linux
+      script:
+        - julia --project=docs/ -e &#39;using Pkg; Pkg.develop(PackageSpec(path=pwd()));
+                                               Pkg.instantiate()&#39;
+        - julia --project=docs/ docs/make.jl
+      after_success: skip</code></pre><h1><a class="nav-anchor" id="Enable-GitHub-Pages-1" href="#Enable-GitHub-Pages-1">Enable GitHub Pages</a></h1><ul><li>On GitHub, navigate to your GitHub Pages site&#39;s repository.</li><li>Under your repository name, click Settings.</li><li>Use the Select source drop-down menu to select master or gh-pages as your GitHub Pages publishing source.</li><li>Click Save.</li></ul><p>By default Documenter will create a link called <code>dev</code> that points to the latest version</p><pre><code class="language-none">https://pnavaro.github.io/LyonCalcul.jl/dev</code></pre><h2><a class="nav-anchor" id="Badges-1" href="#Badges-1">Badges</a></h2><p>It is common practice to make use of &quot;badges&quot; for Travis build status, code coverage and documentation. Adding the following to your package <code>README.md</code> should be all that is necessary:</p><ul><li>Codecov badge : https://codecov.io/gh/pnavaro/LyonCalcul.jl/settings/badge</li><li>Travis badge : https://travis-ci.org/ click on the the badge corresponding to your repository.</li></ul><pre><code class="language-markdown">[![Build Status](https://travis-ci.org/pnavaro/LyonCalcul.jl.svg?branch=master)](https://travis-ci.org/pnavaro/LyonCalcul.jl)
+[![codecov](https://codecov.io/gh/pnavaro/LyonCalcul.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/pnavaro/LyonCalcul.jl)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://pnavaro.github.io/LyonCalcul.jl/stable)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://pnavaro.github.io/LyonCalcul.jl/dev)</code></pre><h1><a class="nav-anchor" id="Register-your-package-1" href="#Register-your-package-1">Register your package</a></h1><ul><li>Set up <a href="https://github.com/integration/attobot">AttoBot</a> on your repository.</li><li>You need to tag your verson with git (for example v0.1.0)</li><li>Use <a href="https://help.github.com/articles/creating-releases/">Github releases</a>.</li><li>Wait a couple of days.</li></ul><p><em>I did not do it for LyonCalcul</em></p><h1><a class="nav-anchor" id="Items-not-covered-1" href="#Items-not-covered-1">Items not covered</a></h1><ul><li>Binary package <a href="https://github.com/JuliaLang/PackageCompiler.jl">PackageCompiler.jl</a></li><li>Mixed language <a href="https://github.com/JuliaPackaging/BinDeps.jl">BinDeps.jl</a></li><li><a href="https://juliaobserver.com">Julia Observer</a></li><li>Create a pdf with Documenter</li><li><a href="https://fredrikekre.github.io/Literate.jl">Literate.jl</a> : create markdown file and/or jupyter notebook from a julia program. Easy way to create your examples and tutorials.</li><li><a href="https://github.com/oxinabox/WeaveAwayNotebooks">WeaveAwayNotebooks.jl</a> : convert Jupyter Notebooks to Literate.jl files</li><li><a href="https://github.com/mpastell/Weave.jl">Weave.jl</a> : Scientific reports/literate programming for Julia</li></ul><h1><a class="nav-anchor" id="Bonus-1" href="#Bonus-1">Bonus</a></h1><p>To set your documentation logo, just add a image file named logo.png in docs/src/assets directory.</p><p>Its size must be 100 x 100 pixels.</p><p>You can modify the julia logo images available on <a href="https://github.com/JuliaGraphics/julia-logo-graphics">JuliaGraphics</a></p><h1><a class="nav-anchor" id="Links-1" href="#Links-1">Links</a></h1><ul><li><a href="https://github.com/JuliaPackaging">Simplifying working with Julia packages and dependencies</a></li><li><a href="https://attractivechaos.wordpress.com/2018/09/26/creating-a-new-package-in-julia/">Creating a new package in Julia</a></li><li><a href="https://github.com/JuliaDocs/Documenter.jl">Documenter</a></li><li><a href="http://www.stochasticlifestyle.com/finalizing-julia-package-documentation-testing-coverage-publishing/">Finalizing Your Julia Package: Documentation, Testing, Coverage, and Publishing</a> (outdated)</li><li><a href="https://github.com/timholy/Revise.jl">Revise.jl : Automatically update function definitions in a running Julia session</a></li></ul><p><em>This page was generated using <a href="https://github.com/fredrikekre/Literate.jl">Literate.jl</a>.</em></p><footer><hr/><a class="previous" href="../"><span class="direction">Previous</span><span class="title">Documentation</span></a></footer></article></body></html>
