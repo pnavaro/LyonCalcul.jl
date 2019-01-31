@@ -1,6 +1,7 @@
-
 # # Who am I ?
 # 
+#md # [notebook](@__NBVIEWER_ROOT_URL__docs/src/slides.ipynb)
+#
 # - My name is *Pierre Navaro*
 # 
 # - Ph.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)
@@ -569,7 +570,6 @@ scatter!(x, f, label=:computed)
 # 
 # - Binary package [PackageCompiler.jl](https://github.com/JuliaLang/PackageCompiler.jl)
 # - Mixed language [BinDeps.jl](https://github.com/JuliaPackaging/BinDeps.jl)
-# - [Julia Observer](https://juliaobserver.com)
 # - Create a pdf with Documenter
 # - [Literate.jl](https://fredrikekre.github.io/Literate.jl) : create markdown file and/or jupyter notebook from a julia program. Easy way to create your examples and tutorials.
 # - [WeaveAwayNotebooks.jl](https://github.com/oxinabox/WeaveAwayNotebooks) : convert Jupyter Notebooks to Literate.jl files
@@ -586,6 +586,7 @@ scatter!(x, f, label=:computed)
 
 # # Links
 # 
+# - [Julia Observer](https://juliaobserver.com)
 # - [Simplifying working with Julia packages and dependencies](https://github.com/JuliaPackaging)
 # - [Creating a new package in Julia](https://attractivechaos.wordpress.com/2018/09/26/creating-a-new-package-in-julia/)
 # - [Documenter](https://github.com/JuliaDocs/Documenter.jl)

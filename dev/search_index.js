@@ -261,7 +261,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Talk",
     "title": "Items not covered",
     "category": "section",
-    "text": "Binary package PackageCompiler.jl\nMixed language BinDeps.jl\nJulia Observer\nCreate a pdf with Documenter\nLiterate.jl : create markdown file and/or jupyter notebook from a julia program. Easy way to create your examples and tutorials.\nWeaveAwayNotebooks.jl : convert Jupyter Notebooks to Literate.jl files\nWeave.jl : Scientific reports/literate programming for Julia"
+    "text": "Binary package PackageCompiler.jl\nMixed language BinDeps.jl\nCreate a pdf with Documenter\nLiterate.jl : create markdown file and/or jupyter notebook from a julia program. Easy way to create your examples and tutorials.\nWeaveAwayNotebooks.jl : convert Jupyter Notebooks to Literate.jl files\nWeave.jl : Scientific reports/literate programming for Julia"
 },
 
 {
@@ -277,7 +277,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Talk",
     "title": "Links",
     "category": "section",
-    "text": "Simplifying working with Julia packages and dependencies\nCreating a new package in Julia\nDocumenter\nFinalizing Your Julia Package: Documentation, Testing, Coverage, and Publishing (outdated)\nRevise.jl : Automatically update function definitions in a running Julia sessionThis page was generated using Literate.jl."
+    "text": "Julia Observer\nSimplifying working with Julia packages and dependencies\nCreating a new package in Julia\nDocumenter\nFinalizing Your Julia Package: Documentation, Testing, Coverage, and Publishing (outdated)\nRevise.jl : Automatically update function definitions in a running Julia sessionThis page was generated using Literate.jl."
 },
 
 ]}
