@@ -1,6 +1,7 @@
-
 # # Who am I ?
 # 
+#md # [notebook](@__NBVIEWER_ROOT_URL__docs/src/slides.ipynb)
+#
 # - My name is *Pierre Navaro*
 # 
 # - Ph.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)
