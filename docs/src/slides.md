@@ -4,6 +4,8 @@ EditURL = "https://github.com/TRAVIS_REPO_SLUG/blob/master/"
 
 # Who am I ?
 
+[notebook](https://nbviewer.jupyter.org/github/TRAVIS_REPO_SLUG/blob/gh-pages/TRAVIS_TAG/docs/src/slides.ipynb)
+
 - My name is *Pierre Navaro*
 
 - Ph.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)
