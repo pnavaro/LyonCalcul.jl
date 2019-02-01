@@ -4,8 +4,6 @@ EditURL = "https://github.com/TRAVIS_REPO_SLUG/blob/master/"
 
 # Who am I ?
 
-[notebook](https://nbviewer.jupyter.org/github/pnavaro/LyonCalcul.jl/blob/master/docs/src/slides.ipynb)
-
 - My name is *Pierre Navaro*
 
 - Ph.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)
@@ -143,6 +141,7 @@ scatter!(x, f, label=:computed)
 
 # Why make a package ?
 
+
 - Share your code and maintain it.
 - Better source files organization.
 - Improve your programming practices (tests and documentation).
@@ -210,6 +209,7 @@ end # module
 ```
 
 # Add dependencies
+
 ```julia
 (LyonCalcul) pkg> add FFTW
  Resolving package versions...
@@ -403,6 +403,7 @@ Manifest.toml
 ```
 
 ### Install first version of Example package in your julia installation
+
 ```
 (v1.1) pkg> add https://github.com/pnavaro/LyonCalcul.jl.git
   Updating registry at `~/.julia/registries/General`
@@ -440,6 +441,8 @@ git push -u origin master
 ```
 
 # On Github choose your license
+
+
 
 Above the file list, click Create new file.
 
@@ -536,6 +539,8 @@ jobs:
 
 # Enable GitHub Pages
 
+
+
 - On GitHub, navigate to your GitHub Pages site's repository.
 - Under your repository name, click Settings.
 - Use the Select source drop-down menu to select master or gh-pages as your GitHub Pages publishing source.
@@ -548,6 +553,7 @@ https://pnavaro.github.io/LyonCalcul.jl/dev
 ```
 
 ## Badges
+
 
 It is common practice to make use of "badges" for Travis build status, code coverage and documentation. Adding the following to your package `README.md` should be all
 that is necessary:
@@ -564,6 +570,8 @@ that is necessary:
 
 # Register your package
 
+
+
 - Set up [AttoBot](https://github.com/integration/attobot) on your repository.
 - You need to tag your verson with git (for example v0.1.0)
 - Use [Github releases](https://help.github.com/articles/creating-releases/).
@@ -572,6 +580,8 @@ that is necessary:
 *I did not do it for LyonCalcul*
 
 # Items not covered
+
+
 
 - Binary package [PackageCompiler.jl](https://github.com/JuliaLang/PackageCompiler.jl)
 - Mixed language [BinDeps.jl](https://github.com/JuliaPackaging/BinDeps.jl)
@@ -582,6 +592,8 @@ that is necessary:
 
 # Bonus
 
+
+
 To set your documentation logo, just add a image file named logo.png in docs/src/assets directory.
 
 Its size must be 100 x 100 pixels.
@@ -589,6 +601,7 @@ Its size must be 100 x 100 pixels.
 You can modify the julia logo images available on [JuliaGraphics](https://github.com/JuliaGraphics/julia-logo-graphics)
 
 # Links
+
 
 - [Julia Observer](https://juliaobserver.com)
 - [Simplifying working with Julia packages and dependencies](https://github.com/JuliaPackaging)

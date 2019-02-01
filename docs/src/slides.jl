@@ -1,7 +1,6 @@
+
 # # Who am I ?
 # 
-#md # [notebook](@__NBVIEWER_ROOT_URL__docs/src/slides.ipynb)
-#
 # - My name is *Pierre Navaro*
 # 
 # - Ph.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)
@@ -135,6 +134,7 @@ scatter!(x, f, label=:computed)
 
 # # Why make a package ?
 # 
+# 
 # - Share your code and maintain it.
 # - Better source files organization.
 # - Improve your programming practices (tests and documentation).
@@ -142,7 +142,7 @@ scatter!(x, f, label=:computed)
 # - Documentation is hosted and generated after every changes.
 
 # # Configure git
-# 
+
 # ```bash
 # git config --global user.name "Pierre Navaro"
 # git config --global user.email "pierre.navaro@math.cnrs.fr"
@@ -150,7 +150,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # # Create the Julia package LyonCalcul
-# 
+
 # ```julia
 # (v1.0) pkg> generate LyonCalcul
 # Generating project LyonCalcul:
@@ -202,6 +202,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # # Add dependencies
+
 # ```julia
 # (LyonCalcul) pkg> add FFTW
 #  Resolving package versions...
@@ -250,7 +251,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # # Add a test
-# 
+
 # ```bash
 # cd LyonCalcul
 # mkdir test
@@ -277,7 +278,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # ## Verify the test
-# 
+
 # ```julia
 # (LyonCalcul) pkg> test
 #    Testing LyonCalcul
@@ -342,7 +343,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # # Add a repository on Github
-# 
+
 # https://github.com/pnavaro/LyonCalcul.jl
 # 
 # - Note : the repository name has the ".jl" extension
@@ -386,7 +387,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # ### Ignore some files
-# 
+
 # ```
 # $ cat .gitignore
 # *.jl.cov
@@ -398,6 +399,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # ### Install first version of Example package in your julia installation
+
 # ```
 # (v1.1) pkg> add https://github.com/pnavaro/LyonCalcul.jl.git
 #   Updating registry at `~/.julia/registries/General`
@@ -423,7 +425,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # # Push the package on github
-# 
+
 # ```bash
 # cd LyonCalcul
 # echo "# LyonCalcul.jl" >> README.md
@@ -435,6 +437,8 @@ scatter!(x, f, label=:computed)
 # ```
 
 # # On Github choose your license
+# 
+# 
 # 
 # Above the file list, click Create new file.
 # 
@@ -531,6 +535,8 @@ scatter!(x, f, label=:computed)
 
 # # Enable GitHub Pages 
 # 
+# 
+# 
 # - On GitHub, navigate to your GitHub Pages site's repository.
 # - Under your repository name, click Settings.
 # - Use the Select source drop-down menu to select master or gh-pages as your GitHub Pages publishing source.
@@ -543,6 +549,7 @@ scatter!(x, f, label=:computed)
 # ```
 
 # ## Badges
+# 
 # 
 # It is common practice to make use of "badges" for Travis build status, code coverage and documentation. Adding the following to your package `README.md` should be all
 # that is necessary:
@@ -559,6 +566,8 @@ scatter!(x, f, label=:computed)
 
 # # Register your package
 # 
+# 
+# 
 # - Set up [AttoBot](https://github.com/integration/attobot) on your repository.
 # - You need to tag your verson with git (for example v0.1.0)
 # - Use [Github releases](https://help.github.com/articles/creating-releases/).
@@ -567,6 +576,8 @@ scatter!(x, f, label=:computed)
 # *I did not do it for LyonCalcul*
 
 # # Items not covered
+# 
+# 
 # 
 # - Binary package [PackageCompiler.jl](https://github.com/JuliaLang/PackageCompiler.jl)
 # - Mixed language [BinDeps.jl](https://github.com/JuliaPackaging/BinDeps.jl)
@@ -577,6 +588,8 @@ scatter!(x, f, label=:computed)
 
 # # Bonus
 # 
+# 
+# 
 # To set your documentation logo, just add a image file named logo.png in docs/src/assets directory.
 # 
 # Its size must be 100 x 100 pixels.
@@ -585,6 +598,7 @@ scatter!(x, f, label=:computed)
 # 
 
 # # Links
+# 
 # 
 # - [Julia Observer](https://juliaobserver.com)
 # - [Simplifying working with Julia packages and dependencies](https://github.com/JuliaPackaging)
