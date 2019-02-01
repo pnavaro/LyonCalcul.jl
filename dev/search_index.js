@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Talk",
     "title": "Who am I ?",
     "category": "section",
-    "text": "notebookMy name is Pierre Navaro\nPh.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)\nScientific Software Engineer in Strasbourg (2003-2015) (Fortran 90-2003 + OpenMP-MPI)\nMoved to Rennes in 2015 (Numpy + Cython, R + Rcpp)\nJulia user since July 2018 (Julia v1.0)"
+    "text": "My name is Pierre Navaro\nPh.D in Computational Aeroacoustics, 1998-2002 (Université du Havre) (Fortran 77+PVM)\nScientific Software Engineer in Strasbourg (2003-2015) (Fortran 90-2003 + OpenMP-MPI)\nMoved to Rennes in 2015 (Numpy + Cython, R + Rcpp)\nJulia user since July 2018 (Julia v1.0)"
 },
 
 {
