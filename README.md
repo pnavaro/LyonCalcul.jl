@@ -6,4 +6,4 @@
 [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://pnavaro.github.io/LyonCalcul.jl/dev)
 
 
-Talk in Lyon for Julia Day January 31th 2019  [slides](docs/src/slides.md)
+[Talk in Lyon for Julia Day January 31th 2019](docs/src/slides.md)
