@@ -21,7 +21,7 @@ function bspline(p::Int, j::Int, x::Float64)
    end
    return (w * bspline(p - 1, j, x)
            + (1 - w1) * bspline(p - 1, j + 1, x))
-end</code></pre><div><pre><code class="language-julia">?bspline</code></pre></div><h1><a class="nav-anchor" id="Advection-callable-struct-1" href="#Advection-callable-struct-1"><code>Advection</code> callable struct</a></h1><div><pre><code class="language-julia">&quot;&quot;&quot;
+end</code></pre><pre><code class="language-julia">?bspline</code></pre><h1><a class="nav-anchor" id="Advection-callable-struct-1" href="#Advection-callable-struct-1"><code>Advection</code> callable struct</a></h1><pre><code class="language-julia">&quot;&quot;&quot;
     Advection(n, p, delta)
 
     n :: Number of points.
@@ -51,7 +51,7 @@ mutable struct Advection
 
         new(n, p, delta, modes, eig_bspl, eig_alpha)
     end
-end</code></pre><pre><code class="language-none">Main.ex-slides.Advection</code></pre></div><pre><code class="language-">using FFTW
+end</code></pre><pre><code class="language-none">Main.ex-slides.Advection</code></pre><pre><code class="language-">using FFTW
 
 &quot;&quot;&quot;
     advection! = Advection( n, p, delta)
