@@ -8,3 +8,6 @@
 
 
 [Talk in Lyon for Julia Day January 31th 2019](docs/src/slides.md)
+
+This presentation about how to develop a Julia package is obsolete.
+There is a new tool named [PkgTemplates](https://github.com/invenia/PkgTemplates.jl).
