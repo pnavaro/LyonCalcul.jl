@@ -1,7 +1,3 @@
-```@meta
-EditURL = "https://github.com/TRAVIS_REPO_SLUG/blob/master/"
-```
-
 # Who am I ?
 
 - My name is *Pierre Navaro*
@@ -16,116 +12,18 @@ EditURL = "https://github.com/TRAVIS_REPO_SLUG/blob/master/"
 
 # `bspline` function
 
-```@example slides
-"""
-    bspline(p, j, x)
-
-Return the value at x in [0,1[ of the B-spline with integer nodes
-of degree p with support starting at j.
-Implemented recursively using the
-[De Boor's Algorithm](https://en.wikipedia.org/wiki/De_Boor%27s_algorithm)
-
-```math
-B_{i,0}(x) := \\left\\{
-\\begin{matrix}
-1 & \\mathrm{if}  \\quad t_i ≤ x < t_{i+1} \\\\
-0 & \\mathrm{otherwise}
-\\end{matrix}
-\\right.
-```
-
-```math
-B_{i,p}(x) := \\frac{x - t_i}{t_{i+p} - t_i} B_{i,p-1}(x)
-+ \\frac{t_{i+p+1} - x}{t_{i+p+1} - t_{i+1}} B_{i+1,p-1}(x).
-```
-"""
-function bspline(p::Int, j::Int, x::Float64)
-   if p == 0
-       if j == 0
-           return 1.0
-       else
-           return 0.0
-       end
-   else
-       w = (x - j) / p
-       w1 = (x - j - 1) / p
-   end
-   return (w * bspline(p - 1, j, x)
-           + (1 - w1) * bspline(p - 1, j + 1, x))
-end
-```
-
-```@example slides
-?bspline
+```@docs 
+LyonCalcul.bspline
 ```
 
 # `Advection` callable struct
 
-```@example slides
-"""
-    Advection(n, p, delta)
-
-    n :: Number of points.
-    p :: Spline degree.
-    delta :: space size step.
-
-"""
-mutable struct Advection
-    n         :: Int64
-    p         :: Int64
-    delta     :: Float64
-    modes     :: Vector{Float64}
-    eig_bspl  :: Vector{ComplexF64}
-    eig_alpha :: Vector{ComplexF64}
-
-    function Advection( n, p, delta )
-
-        eig_bspl  = zeros(ComplexF64,n)
-        eig_alpha = similar(eig_bspl)
-        modes = 2π * (0:n-1) / n
-
-        eig_bspl .= bspline(p, -div(p+1,2), 0.0)
-        for j in 1:div(p+1,2)-1
-            eig_bspl .+= (bspline(p, j-div(p+1,2), 0.0)
-             * 2 * cos.(j * modes))
-        end
-
-        new(n, p, delta, modes, eig_bspl, eig_alpha)
-    end
-end
+```docs
+Advection
 ```
 
 ```@example slides
-using FFTW
-
-"""
-    advection! = Advection( n, p, delta)
-    advection!( f, alpha )
-
-    Create a function to compute the interpolating spline
-    of degree p of odd degree of a 1D function f on a periodic
-    uniform mesh, at all points x after a displacement alpha.
-    Input f type is Vector{Float64} and is updated inplace.
-
-"""
-function (adv :: Advection)(f     :: Vector{Float64},
-                            alpha :: Float64)
-
-
-   ishift = floor(- alpha / adv.delta)
-   beta = - ishift - alpha / adv.delta
-   fill!(adv.eig_alpha, 0.0)
-   for j in -div(adv.p-1,2):div(adv.p+1,2)
-      adv.eig_alpha .+= (bspline(adv.p, j-div(adv.p+1,2), beta)
-         .* exp.((ishift + j) * 1im .* adv.modes))
-   end
-
-   f .= real(ifft(fft(f) .* adv.eig_alpha ./ adv.eig_bspl))
-
-end
-```
-
-```@example slides
+using LyonCalcul
 using Plots
 xmin, xmax, nx = 0, 4π, 64  ## set-up the 1d mesh
 dx = (xmax - xmin) / nx
@@ -135,8 +33,8 @@ f = sin.(x) ## initialize the function f(x)
 advection! = Advection(nx, 5, dx) ## Create the advection function
 advection!(f, 1.0) ## advect the function f with a displacement α = 1.0
 f_ref = sin.(x.-1) ## compute the analytical solution
-plot(x, f_ref, label=:reference)
-scatter!(x, f, label=:computed)
+plot(x, f_ref, label="reference")
+scatter!(x, f, label="computed")
 ```
 
 # Why make a package ?
@@ -223,12 +121,10 @@ end # module
   ...
 ```
 
-" The Manifest.toml allows someone to replicate the exact version of the dependencies that was recorded in the manifest on e.g. another machine. For a package that is to be used as a library, this is not useful.
+The Manifest.toml allows someone to replicate the exact version of the dependencies that was recorded in the manifest on e.g. another machine. For a package that is to be used as a library, this is not useful.
 
 However, for an “application”, i.e. something at “top level” (say your julia code to do the simulations in a scientific paper) then it is likely useful to be able to replicate that exact state and the Manifest is thus useful to check in."
 
-
-*Kristoffer Carlsson* (Julia Computing)
 
 # Check the documentation
 

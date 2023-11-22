@@ -1,6 +1,8 @@
 using Documenter
 using LyonCalcul
 
+ENV["GKSwstype"] = "100"
+
 makedocs(modules=[LyonCalcul],
          doctest = false,
          format = Documenter.HTML(),
