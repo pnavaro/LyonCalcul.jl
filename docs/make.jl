@@ -9,7 +9,6 @@ makedocs(modules=[LyonCalcul],
                   "Talk" => "slides.md" ])
 
 deploydocs(
-    deps   = Deps.pip("mkdocs", "python-markdown-math"),
     repo   = "github.com/pnavaro/LyonCalcul.jl.git",
  )
 
